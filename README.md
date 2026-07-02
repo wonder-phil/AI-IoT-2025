@@ -1,7 +1,7 @@
-﻿# IEEE CCWC - 2026
+﻿# Augmented Reality / Virtual Reality Workshop
 ##
-## UNLV University of Nevada, Las Vegas
-#  https://ieee-ccwc.org/
+## 
+#  
 #
 
 > git clone https://github.com/wonder-phil/wonder-phil.github.io <br />
