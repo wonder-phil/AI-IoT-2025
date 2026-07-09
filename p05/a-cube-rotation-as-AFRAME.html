@@ -69,7 +69,9 @@
 			console.log("tick");
 			
 			this.my_var = this.my_var + 1;
+			
 			if (0 == (this.my_var % 50)) {
+				this.data.color = "#555";
 				console.log("x = " + this.el.object3D.rotation.x);
 				this.my_var = 0;
 			
@@ -83,7 +85,7 @@
 		});
     </script>
     <a-scene>   
-	 <a-entity my-box></a-entity> 
+	 <a-entity my-box="color: 1; enabled: true" ></a-entity> 
       </a-scene>
   </body>
 </html>
