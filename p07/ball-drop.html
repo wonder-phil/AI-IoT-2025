@@ -1,26 +1,74 @@
-
+<!DOCTYPE html>
 <html>
   <head>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
   </head>
   <body>
-	<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
-	<script>
-	  AFRAME.registerComponent("ball_drop", {
-		init: function() {
-		  this.el.addEventListener("click", e => {
-			// reset position
-			this.el.setAttribute("position", "0 2 -4")
-			// sync
-			this.el.components["dynamic-body"].syncToPhysics();
-		  }, { passive: false })
-		}
-	  })
-	</script>
-	<a-scene physics cursor="rayOrigin: mouse">
-	  <a-sphere position="0 5 -5" radius="0.5" color="#EF2D5E" dynamic-body ball_drop></a-sphere>
-	  <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" static-body></a-plane>
-	  <a-sky color="#ECECEC"></a-sky>
-	</a-scene>
- </body>
+    <script>
+      AFRAME.registerComponent('ball-drop', {
+        schema: {
+          startY: {type: 'number', default: 5},
+          groundY: {type: 'number', default: 0.5},
+          gravity: {type: 'number', default: 9.8},
+          bounce: {type: 'number', default: 0.6}
+        },
+
+        init: function () {
+          this.velocityY = 0;
+          this.el.object3D.position.y = this.data.startY;
+
+          // click to reset the ball
+          this.el.addEventListener('click', () => {
+            this.el.object3D.position.y = this.data.startY;
+            this.velocityY = 0;
+          });
+
+          // bind so 'this' refers to the component inside the handler
+          this.onVisibilityChange = this.onVisibilityChange.bind(this);
+
+          // detect when the tab/window becomes active again
+          document.addEventListener('visibilitychange', this.onVisibilityChange);
+          window.addEventListener('focus', this.onVisibilityChange);
+        },
+
+        onVisibilityChange: function () {
+          if (document.visibilityState === 'visible' || document.hasFocus()) { //reinit
+            this.velocityY = 0;
+          }
+        },
+
+        tick: function (time, timeDelta) {
+          if (timeDelta > 200) console.log('Frame jump caught, was:', timeDelta, 'ms');
+
+          let dt = timeDelta / 1000;
+          dt = Math.min(dt, 0.1); // cap elapsed time per frame to avoid large jumps
+
+          this.velocityY -= this.data.gravity * dt;
+
+          let pos = this.el.object3D.position;
+          pos.y += this.velocityY * dt;
+
+          if (pos.y <= this.data.groundY) {
+            pos.y = this.data.groundY;
+            this.velocityY = -this.velocityY * this.data.bounce;
+
+            if (Math.abs(this.velocityY) < 0.1) {
+              this.velocityY = 0;
+            }
+          }
+        },
+
+        remove: function () {
+          document.removeEventListener('visibilitychange', this.onVisibilityChange);
+          window.removeEventListener('focus', this.onVisibilityChange);
+        }
+      });
+    </script>
+
+    <a-scene cursor="rayOrigin: mouse">
+      <a-sphere position="0 5 -5" radius="0.5" color="#EF2D5E" ball-drop></a-sphere>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+  </body>
 </html>
