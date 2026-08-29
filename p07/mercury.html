@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+  </head>
+  <body>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const isLocal = ['localhost','127.0.0.1','[::1]'].includes(location.hostname);
+
+        // Mars
+        const marsSrc = isLocal
+          ? 'http://localhost:8000/p04/IMAGES/mars-surface.avif'
+          : './IMAGES/mars-surface.avif';
+        document.getElementById('mars-img').setAttribute('src', marsSrc);
+
+        // Mercury
+        const mercurySrc = isLocal
+          ? 'http://localhost:8000/p04/IMAGES/PIA10174.jpg'
+          : './IMAGES/PIA10174.jpg';
+        document.getElementById('mercury-img').setAttribute('src', mercurySrc);
+
+        document.querySelector('a-assets').addEventListener('loaded', () => {
+          document.getElementById('mars').setAttribute('material', 'src: #mars-img');
+          document.getElementById('mercury').setAttribute('material', 'src: #mercury-img');
+        });
+      });
+    </script>
+
+    <a-scene>
+      <a-entity camera position="0 4 6" rotation="-25 0 0" look-controls wasd-controls="fly: true"></a-entity>
+
+      <a-sky color="#000010"></a-sky>
+
+      <a-assets>
+        <img id="mars-img" crossorigin="anonymous">
+        <img id="mercury-img" crossorigin="anonymous">
+      </a-assets>
+
+      <!-- Sun -->
+      <a-sphere position="0 2 -5" radius="0.6" color="#FDB813"></a-sphere>
+
+    
+
+      <!-- Mercury: orbit 0.24yr, spin 58.6 days, distance 1.2 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 2400">
+        <a-sphere id="mercury" position="1.2 0 0" radius="1.5" src="#mercury-img"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 117200">
+        </a-sphere>
+      </a-entity>
+	  
+	  <a-entity position="4 4 -10" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 2400">
+        <a-sphere id="mercury" position="1.2 0 0" radius="0.1" src="#mercury-img"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 117200">
+        </a-sphere>
+      </a-entity>
+
+   
+
+    </a-scene>
+  </body>
+</html>

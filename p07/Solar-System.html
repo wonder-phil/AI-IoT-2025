@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+  </head>
+  <body>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const isLocal = ['localhost','127.0.0.1','[::1]'].includes(location.hostname);
+
+        // Mars
+        const marsSrc = isLocal
+          ? 'http://localhost:8000/p04/IMAGES/mars-surface.avif'
+          : './IMAGES/mars-surface.avif';
+        document.getElementById('mars-img').setAttribute('src', marsSrc);
+
+        // Mercury
+        const mercurySrc = isLocal
+          ? 'http://localhost:8000/p04/IMAGES/PIA10174.jpg'
+          : './IMAGES/PIA10174.jpg';
+        document.getElementById('mercury-img').setAttribute('src', mercurySrc);
+
+        document.querySelector('a-assets').addEventListener('loaded', () => {
+          document.getElementById('mars').setAttribute('material', 'src: #mars-img');
+          document.getElementById('mercury').setAttribute('material', 'src: #mercury-img');
+        });
+      });
+    </script>
+
+    <a-scene>
+      <a-entity camera position="0 4 6" rotation="-25 0 0" look-controls wasd-controls="fly: true"></a-entity>
+
+      <a-sky color="#000010"></a-sky>
+
+      <a-assets>
+        <img id="mars-img" crossorigin="anonymous">
+        <img id="mercury-img" crossorigin="anonymous">
+      </a-assets>
+
+      <!-- Sun -->
+      <a-sphere position="0 2 -5" radius="0.6" color="#FDB813"></a-sphere>
+
+      <!-- Orbit rings (visible paths) -->
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="1.2" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="2.2" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="3" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="4.5" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="8" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="11" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="14" radius-tubular="0.01" color="#555"></a-torus>
+      <a-torus position="0 2 -5" rotation="90 0 0" radius="17" radius-tubular="0.01" color="#555"></a-torus>
+
+      <!-- Mercury: orbit 0.24yr, spin 58.6 days, distance 1.2 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 2400">
+        <a-sphere id="mercury" position="1.2 0 0" radius="0.1"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 117200">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Venus: orbit 0.62yr, spin 243 days (retrograde), distance 2.2 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 6200">
+        <a-sphere position="2.2 0 0" radius="0.15" color="#E8CDA2"
+          animation="property: rotation; to: 0 360 0; easing: linear; loop: true; dur: 486000">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Earth: orbit 1yr, spin 1 day, distance 3 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 10000">
+        <a-sphere position="3 0 0" radius="0.16" color="#2A6EBB"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 2000">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Mars: orbit 1.88yr, spin 1.03 days, distance 4.5 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 18800">
+        <a-sphere id="mars" position="4.5 0 0" radius="0.12"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 2060">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Jupiter: orbit 11.9yr, spin 0.41 days, distance 8 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 119000">
+        <a-sphere position="8 0 0" radius="0.5" color="#D8A76A"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 820">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Saturn: orbit 29.5yr, spin 0.45 days, distance 11 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 295000">
+        <a-sphere position="11 0 0" radius="0.45" color="#E5D3A6"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 900">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Uranus: orbit 84yr, spin 0.72 days, distance 14 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 840000">
+        <a-sphere position="14 0 0" radius="0.3" color="#AFDDE5"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 1440">
+        </a-sphere>
+      </a-entity>
+
+      <!-- Neptune: orbit 165yr, spin 0.67 days, distance 17 -->
+      <a-entity position="0 2 -5" rotation="0 0 0"
+        animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 1650000">
+        <a-sphere position="17 0 0" radius="0.29" color="#3B5BA9"
+          animation="property: rotation; to: 0 -360 0; easing: linear; loop: true; dur: 1340">
+        </a-sphere>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
